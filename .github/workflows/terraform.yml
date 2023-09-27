@@ -25,12 +25,17 @@ jobs:
     - name: Apply Terraform
       run: terraform apply -auto-approve
 
-    - name: Deploy to GKE 
-      run: app.py
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t gcr.io/zoominfo-project/zi-image-name:latest .
+        docker push gcr.io/zoominfo-project/zi-image-name:latest
+
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f kubernetes/deployment.yaml
+        kubectl apply -f kubernetes/service.yaml
 
     - name: Deploy Successful
       run: echo "Deployment Successful!"
 
-    - name: Clean Up
-      run: terraform destroy -auto-approve
 
