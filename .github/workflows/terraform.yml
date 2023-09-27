@@ -1,0 +1,36 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.3
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: zoominfo-project
+
+    - name: Initialize Terraform
+      run: terraform init
+
+    - name: Apply Terraform
+      run: terraform apply -auto-approve
+
+    - name: Deploy to GKE 
+      run: app.py
+
+    - name: Deploy Successful
+      run: echo "Deployment Successful!"
+
+    - name: Clean Up
+      run: terraform destroy -auto-approve
+
