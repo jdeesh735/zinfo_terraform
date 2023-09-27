@@ -14,7 +14,7 @@ variable "zone" {
 
 variable "bucket_name" {
   description = "Name of the GCS Bucket"
-  default     = "my-sample-bucket"
+  default     = "zi-sample-bucket"
 }
 
 variable "service_account_key" {
