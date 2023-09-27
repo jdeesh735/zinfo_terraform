@@ -1,9 +1,16 @@
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "~> 4.0" # Use the version constraint here
+    }
+  }
+}
+
 provider "google" {
   credentials = file("kubernetes/zinfo.json")
-#/home/jdeesh735/sa_tf/zoominfo/zinfo-sa_zoominfo-project.json
   project     = "<your-project-id>"
   region      = "<your-region>"
-  version     = "~> 4.0"
 }
 
 resource "google_container_cluster" "zi-cluster" {
