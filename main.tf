@@ -62,7 +62,7 @@ resource "google_compute_backend_service" "zi-backend-service" {
   backend {
     group = google_compute_instance.zi-instance.self_link
   }
-  port             = 80
+  #port             = 80
   protocol         = "HTTP"
   timeout_sec      = 10
   enable_cdn       = false
