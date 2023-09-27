@@ -1,1 +1,13 @@
-
+{
+  "type": "service_account",
+  "project_id": "zoominfo-project",
+  "private_key_id": "ef1cebc5675103094af243f194b35913c8bdfba9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7skHVt2vjmoiP\narTgnr2tMxBb485IUIa+vjlc9nr2Qify2lwWi8/KRkQabcBqiIvIKcPpmiREU/7X\n4RXCHCGEA//OXKWSrusfag+wEnRWbJRqxeb1yOQ5cEhowj7nNBcpdQgRy0YQCf+l\nfMpvwAE/P0WNPffqX7TJiakkS6+L463xIhr/hPufSxcvr1mc/9zCIlwm/R6+KXSA\nmvFor+jg183pZQ39oKPrXX6jm0zbGJ18rsnFTEUvKWNcdtmBzLXLwx7raCF01/n/\n1SfGJ/ldG0nc4KBLymH5/rDnssqQIblTwHLWfY4wNfPsjAAGrBj5LkPePoTEZdcT\nRvsMmdupAgMBAAECggEALoZJONUiHlT2AByqUJoweG/VoH1XasfhGoMy21byVDvC\nRLl5BZKq0x/3LhjhztZhVaB6ohsV3cT3QKIXn1mTOjK2k/uVhAYtHEiRMmrkoO6B\nnHTJIsfkwFMTc7ogVvVrv1g1w5lgGMYtsuK7mBcfCAMiNZg0bUlDWghwH2HOVe1R\nE1VnmKR/Nxy/Of2EY+t/2sez+6qiATxLl8UU05puqa6u/wgHwu8yCAt9Y6K18jw9\njzFN5aCLI1TrqLNs1QQi+sEHhi6j47Fl6p3PqC1ha1F/NYxAscK61w7HMMkRKA1/\nMsQoL/R5n1hRCvsPQPCW44en/QpcYUOVdgiQvBMM7QKBgQDphCSEu6nvfIS+xIIp\nYC4AyldSb2NnDGessVZcuyJfidBqyqlGYeFNK+WqQtSG33QEstCm79jKnA9YJsvr\n/6MhAx+6DCHwGrT6zug0wO75MOJp6kKeGs2eZtATy6BE1fhsavDvBW4C7ZRWBZGh\nQDz6dIvlyNAn6WqpWZhJL3QonQKBgQDNxLeKI0fMUn5SWwkYLrumjHI+d+WmOEM8\nKSl5UEaM0ycRVe3EMndxdJ3icN9lOldEW25lWnUcD/Z63iAeW678Dsb3J7Uic2HG\nWC5zcbDaj5dqift/ot/cSMtKAgHHh9s8DRQBBQb2RzLMO5gQ8xrxDTtk9pzpdGUe\nU7W4ExnzfQKBgQDJspDUcT/8EoKaQCPpVyEFH8DC/GFQnd9iw55D5INxIBl8VGZX\n261+Ob9bC/SENrgAYu9kceDASIHcc05KHvmpRwh9a4NY38iYpmTdRBRl+vpl36kA\n5UfbXRS3NHfPXT4Bb3GCEx+NueYZUyARtum0rzwzEvvwrWWqty+ZbzqW5QKBgC5l\nUaETDWhTnWoCXs2WE/ecqVHOhPhyrS5OdayF3jJ4ldGB14eqfWYWjlb1blmLywt9\ntimiOM+oBcJ0fTd7IrxwtIob6Oqoq34meerL0r2lLNX34L5JwkIQI84/H5mW12b1\n5/HG6Wf0a87DDSmdNxDtE9xTAtRcy0QISewEWpCdAoGBANkU9H8E5ZeNHde8FCkW\n5/UqeCjaoPdjqxGoJt6CgGaMlcF0sGhpBNhdHjnvYfu5pC6HTzYP8FVq272mL3eH\nnVBhAoxsJ4GtfjnaYevF1ItGDlKx9UWvTQsiHazpxQXagZvOApyUFkan2nfLfx5V\nCUWMxm0fMyqSJJvO8bpvxWHY\n-----END PRIVATE KEY-----\n",
+  "client_email": "zinfo-sa@zoominfo-project.iam.gserviceaccount.com",
+  "client_id": "107214762233526927538",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/zinfo-sa%40zoominfo-project.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
