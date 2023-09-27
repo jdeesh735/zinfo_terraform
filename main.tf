@@ -15,16 +15,13 @@ provider "google" {
 
 resource "google_container_cluster" "zi-cluster" {
   name     = "zi-cluster"
-  location = "<your-region>"
+  location = "us-central1"
+  initial_node_count = 1
 
   node_pool {
-    name       = "default-node-pool"
+    name       = "default-pool"
     machine_type = "n1-standard-1"
-    node_count = 1
   }
-
-  initial_node_count = 1
-  node_locations     = ["<your-region>"]
 }
 
 resource "google_compute_instance" "zi-instance" {
