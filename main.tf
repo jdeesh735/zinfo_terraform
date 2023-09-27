@@ -3,6 +3,7 @@ provider "google" {
 #/home/jdeesh735/sa_tf/zoominfo/zinfo-sa_zoominfo-project.json
   project     = "<your-project-id>"
   region      = "<your-region>"
+  version     = "~> 4.0"
 }
 
 resource "google_container_cluster" "zi-cluster" {
@@ -53,7 +54,7 @@ resource "google_compute_firewall" "zi-firewall" {
 resource "google_compute_backend_service" "zi-backend-service" {
   name             = "zi-backend-service"
   backend {
-    default = google_compute_instance.zi-instance.self_link
+    group = google_compute_instance.zi-instance.self_link
   }
   port             = 80
   protocol         = "HTTP"
@@ -72,18 +73,33 @@ resource "google_compute_http_health_check" "zi-health-check" {
 }
 
 resource "google_compute_url_map" "zi-url-map" {
-  name = "zi-url-map"
+  name     = "zi-url-map"
+  
   default_route_action {
-    backend_service = google_compute_backend_service.zi-backend-service.self_link
-  }
-  default_route_action {
-    redirect_action {
+    cors_policy = google_compute_url_map_default_route_action_cors_policy.zi-cors-policy.self_link
+    timeout_ms = 60000
+    url_redirect_action {
       https_redirect_action {
-        https_redirect_https_port = "443"
+        https_redirect_response_code = "MOVED_PERMANENTLY"
+      }
+    }
+  }
+  
+  default_service = google_compute_backend_service.zi-backend-service.self_link
+
+  route {
+    description = "Route to backend service"
+    match {
+      path = "/"
+    }
+    route_action {
+      weighted_action {
+        default_route_action = google_compute_url_map_default_route_action.zi-default-route-action.self_link
       }
     }
   }
 }
+
 
 resource "google_compute_global_forwarding_rule" "zi-forwarding-rule" {
   name       = "zi-forwarding-rule"
