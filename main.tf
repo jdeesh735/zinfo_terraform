@@ -1,5 +1,6 @@
 provider "google" {
-  credentials = file("/home/jdeesh735/sa_tf/zoominfo/zinfo-sa_zoominfo-project.json")
+  credentials = file("kubernetes/zinfo.json")
+#/home/jdeesh735/sa_tf/zoominfo/zinfo-sa_zoominfo-project.json
   project     = "<your-project-id>"
   region      = "<your-region>"
 }
