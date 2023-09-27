@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zi-app-deployment
+  labels:
+    app: zi-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zi-app
+  template:
+    metadata:
+      labels:
+        app: zi-app
+    spec:
+      containers:
+      - name: zi-app-container
+        image: gcr.io/zoominfo-project/zi-image-name:latest
+        ports:
+        - containerPort: 80
