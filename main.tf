@@ -18,6 +18,7 @@ provider "google" {
 resource "google_container_cluster" "zi_cluster" {
   name     = "zi-cluster"
   location = "us-central1"
+  initial_node_count = 1
 
   # Specify additional configuration for your cluster (e.g., node pools).
   # ...
@@ -48,8 +49,10 @@ resource "google_compute_http_health_check" "health_check" {
 }
 
 resource "google_compute_instance_group" "instance_group" {
-  name        = "instance-group"
-  description = "Instance group for your service"
+  name        = "zi-instance-group"
+  zone        = "us-central1-a"  # Specify the zone for your instance group
+  description = "My instance group"
+
 
   named_port {
     name = "http"
