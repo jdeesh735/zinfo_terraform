@@ -9,7 +9,7 @@ terraform {
 
 # Define your provider (Google Cloud).
 provider "google" {
-  credentials = file("path/to/your/credentials.json")
+  credentials = file("kubernetes/zinfo.json")
   project     = "zoominfo-project"
   region      = "us-central1"
 }
