@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("<path-to-your-service-account-key.json>")
+  credentials = file("/home/jdeesh735/sa_tf/zoominfo/zinfo-sa_zoominfo-project.json")
   project     = "<your-project-id>"
   region      = "<your-region>"
 }
