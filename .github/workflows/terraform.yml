@@ -38,4 +38,7 @@ jobs:
     - name: Deploy Successful
       run: echo "Deployment Successful!"
 
+    - name: Clean Up
+      run: terraform destroy -auto-approve
+
 
