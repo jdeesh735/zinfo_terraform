@@ -42,14 +42,14 @@ resource "google_storage_bucket_iam_binding" "bucket_iam" {
 
 # Create a Load Balancer.
 resource "google_compute_http_health_check" "health_check" {
-  name               = "health-check"
+  name               = "zi-health-check"
   request_path       = "/"
   port               = 80
   check_interval_sec = 5
 }
 
 resource "google_compute_instance_group" "instance_group" {
-  name        = "zi-instance-group"
+  name        = "instance-group"
   zone        = "us-central1-a"  # Specify the zone for your instance group
   description = "My instance group"
 
