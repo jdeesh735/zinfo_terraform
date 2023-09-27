@@ -20,7 +20,7 @@ resource "google_container_cluster" "zi-cluster" {
 
   node_pool {
     name       = "default-pool"
-    machine_type = "n1-standard-1"
+    #machine_type = "n1-standard-1"
     # Other node pool configurations go here
   }
 }
