@@ -16,6 +16,12 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT }}
+
       - name: Build and Push Docker Image
         env:
           DOCKER_REGISTRY: us-central1-docker.pkg.dev  # Replace with your Docker registry URL
@@ -29,12 +35,6 @@ jobs:
           echo ${{ secrets.GCP_SA_KEY }} | docker login -u _json_key --password-stdin $DOCKER_REGISTRY
           docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
       
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.0
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT }}
-
       - name: Terraform Init
         run: |
           cd app/  # Replace with the path to your Terraform configuration
