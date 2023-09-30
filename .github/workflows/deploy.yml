@@ -24,17 +24,17 @@ jobs:
         env:
           ACTIONS_STEP_DEBUG: true  # Enable debug output for this step
 
-
-      - name: Configure kubectl
-        run: |
-          gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
-          kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
-
       - name: Terraform Init & Apply
         run: |
           cd zinfo/
           terraform init
           terraform apply -auto-approve
 
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
+          kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
+
+      
 
       
