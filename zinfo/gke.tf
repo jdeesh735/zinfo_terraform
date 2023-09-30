@@ -1,6 +1,6 @@
 # Define the Google Cloud provider configuration
 provider "google" {
-  credentials = file("kubernetes/zinfo.json")  # Path to your service account JSON key file
+  credentials = file("kube/zinfo.json")  # Path to your service account JSON key file
   project     = "zoominfo-project"  # Your Google Cloud project ID
   region      = "us-central1"  # Your desired region
 }
