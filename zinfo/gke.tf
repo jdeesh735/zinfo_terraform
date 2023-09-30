@@ -14,7 +14,6 @@ resource "google_container_cluster" "zi_cluster" {
       auto_upgrade = true
     }
   }
-
   # Kubernetes Version
   min_master_version = "1.25"
 }
