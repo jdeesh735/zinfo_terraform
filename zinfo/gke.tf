@@ -15,33 +15,11 @@ resource "google_container_cluster" "my_cluster" {
     name       = "default-pool"
     #machine_type = "n1-standard-2"  # Machine type for the nodes
     node_count = 2  # Number of nodes in the default pool
-    min_count  = 1  # Minimum number of nodes (optional)
-    max_count  = 2  # Maximum number of nodes (optional)
-
-    # Define node pool auto-upgrade and auto-repair settings (optional)
-    management {
-      auto_upgrade = true
-      auto_repair  = true
     }
   }
 
   # You can add more node pool blocks if needed for additional node pools
 }
-
-# Define additional Google Container Node Pool resource (if needed)
-resource "google_container_node_pool" "additional_node_pool" {
-  name       = "additional-pool"  # Your desired node pool name
-  location   = google_container_cluster.my_cluster.location  # Use the location of the GKE cluster
-  cluster    = google_container_cluster.my_cluster.name  # Reference the GKE cluster by name
-  node_count = 3  # Number of nodes in this node pool
-
-  # Customize other node pool settings as needed
-}
-
-# Define your Kubernetes deployment and service configurations here
-# For example, you can use the "kubernetes" provider to define Kubernetes resources
-# such as Deployments, Services, ConfigMaps, etc.
-# Refer to Terraform Kubernetes provider documentation for details: https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs
 
 # Example Kubernetes Deployment
 resource "kubernetes_deployment" "example_deployment" {
