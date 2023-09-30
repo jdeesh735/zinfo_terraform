@@ -36,9 +36,6 @@ resource "kubernetes_deployment" "python_app" {
         container {
           name  = "python-app"
           image = "us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-image:latest"
-          ports {
-            container_port = 8080
-          }
         }
       }
     }
