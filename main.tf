@@ -6,75 +6,49 @@ terraform {
     }
   }
 }
-
-# Define your provider (Google Cloud).
 provider "google" {
-  credentials = file("kubernetes/zinfo.json")
-  project     = "zoominfo-project"
-  region      = "us-central1"
+  #credentials = file("kubernetes/zinfo.json")
+  project = var.project_id
+  region = var.region
 }
 
-# Create a GKE cluster.
-resource "google_container_cluster" "zi_cluster" {
-  name     = "zi-cluster"
-  location = "us-central1"
-  initial_node_count = 1
-
-  # Specify additional configuration for your cluster (e.g., node pools).
-  # ...
-
-  depends_on = [google_project_service.k8s]
+resource "google_kubernetes_engine_cluster" "default" {
+  name = "zi-gke-cluster"
+  location = var.region
+  node_count = 3
 }
 
-# Enable the Kubernetes Engine API.
-resource "google_project_service" "k8s" {
-  project = "zoominfo-project"
-  service = "container.googleapis.com"
-}
+resource "google_compute_load_balancer" "default" {
+  name = "zi-load-balancer"
+  type = "loadBalancingScheme::EXTERNAL"
+  port_range = "80-80"
+  health_checks = ["TCP:80"]
 
-# Create a GCS Bucket IAM binding.
-resource "google_storage_bucket_iam_binding" "bucket_iam" {
-  bucket = "zinfo-gcs-bucket"
-
-  role   = "roles/storage.objectViewer"
-  members = ["serviceAccount:zinfo-sa@zoominfo-project.iam.gserviceaccount.com"]
-}
-
-# Create a Load Balancer.
-resource "google_compute_http_health_check" "health_check" {
-  name               = "zi-health-check"
-  request_path       = "/"
-  port               = 80
-  check_interval_sec = 5
-}
-
-resource "google_compute_instance_group" "instance_group" {
-  name        = "instance-group"
-  zone        = "us-central1-a"  # Specify the zone for your instance group
-  description = "My instance group"
-
-
-  named_port {
-    name = "http"
-    port = 80
+  backend_configuration {
+    name = "zi-backend-config"
+    backends {
+      group = google_kubernetes_engine_backend_service.default.name
+    }
   }
 }
 
-resource "google_compute_backend_service" "backend_service" {
-  name        = "backend-service"
-  description = "Backend service for your application"
-  protocol    = "HTTP"
-  timeout_sec = 300
-
-  backend {
-    group = google_compute_instance_group.instance_group.self_link
+resource "google_kubernetes_engine_backend_service" "default" {
+  name = "zi-backend-service"
+  port_name = "http"
+  target_port = 80
+  selector = {
+    app = "zi-app"
   }
-
-  health_checks = [google_compute_http_health_check.health_check.id]
 }
 
-resource "google_compute_global_forwarding_rule" "forwarding_rule" {
-  name       = "forwarding-rule"
-  target     = google_compute_backend_service.backend_service.self_link
-  port_range = "80"
+resource "google_storage_bucket_iam_binding" "default" {
+  bucket = var.gcs_bucket_name
+  role = "roles/storage.objectViewer"
+  members = [
+    "serviceAccount:${google_service_account.default.email}",
+  ]
+}
+
+resource "google_service_account" "default" {
+  name = "zi-service-account"
 }
