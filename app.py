@@ -1,23 +1,23 @@
-from google.cloud import storage
 from flask import Flask, send_file
+from google.cloud import storage
 
 app = Flask(__name__)
 
-@app.route('/get-file')
-def get_file():
-    # Initialize GCS client
-    client = storage.Client()
+@app.route('/')
+def serve_file():
+    bucket_name = 'your-bucket-name'
+    blob_name = 'sample.txt'
 
-    # Replace 'your-bucket-name' and 'your-file-name' with actual values
-    bucket = client.bucket('your-bucket-name')
-    blob = bucket.blob('your-file-name')
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(blob_name)
 
-    # Download the file to a temporary location
-    temp_file = '/tmp/downloaded_file.txt'
-    blob.download_to_filename(temp_file)
-
-    # Serve the file
-    return send_file(temp_file, as_attachment=True)
+    return send_file(
+        blob.download_as_text(),
+        mimetype='text/plain',
+        as_attachment=True,
+        attachment_filename=blob_name
+    )
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
