@@ -42,3 +42,4 @@ resource "kubernetes_service" "python-app" {
     type = "LoadBalancer"
   }
 }
+

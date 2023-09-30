@@ -5,11 +5,7 @@ resource "google_container_cluster" "zinfo-cluster" {
   node_pool {
     name       = "default-node-pool"
     node_count = 1
-    machine_type = "n1-standard-2"
+   # machine_type = "n1-standard-2"
   }
 
-  master_auth {
-    username = ""
-    password = ""
-  }
 }
