@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def serve_html():
+    
     # Fetch the HTML file from GCS and serve it here
     # You'll need to use a library like google-cloud-storage to access GCS.
     # For simplicity, we'll just return a sample HTML response.
