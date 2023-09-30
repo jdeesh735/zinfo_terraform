@@ -2,7 +2,7 @@
 
 # Configure the Google Cloud provider
 provider "google" {
-  credentials = file("path/to/your/service-account-key.json")
+  credentials = file("kubernetes/zinfo.json")
   project     = "your-project-id"
   region      = "us-central1" # Replace with your desired region
 }
