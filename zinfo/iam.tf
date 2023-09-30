@@ -22,10 +22,6 @@ resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
   ]
 }
 
-resource "google_service_account" "my_service_account" {
-  account_id   = "my-service-account"
-  display_name = "My Service Account"
-}
 
 resource "google_service_account_key" "service_account_key" {
   service_account_id = google_service_account.service_account.name
