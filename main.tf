@@ -1,54 +1,68 @@
-terraform {
-  required_providers {
-    google = {
-      source = "hashicorp/google"
-      version = "~> 4.0" # Use the version constraint here
-    }
-  }
-}
+# main.tf
+
+# Configure the Google Cloud provider
 provider "google" {
-  #credentials = file("kubernetes/zinfo.json")
-  project = var.project_id
-  region = var.region
+  credentials = file("path/to/your/service-account-key.json")
+  project     = "your-project-id"
+  region      = "us-central1" # Replace with your desired region
 }
 
-resource "google_kubernetes_engine_cluster" "default" {
-  name = "zi-gke-cluster"
-  location = var.region
-  node_count = 3
+# Create a GKE cluster
+resource "google_container_cluster" "my_cluster" {
+  name     = "my-gke-cluster"
+  location = "us-central1" # Replace with your desired zone
+  initial_node_count = 1
+  node_locations    = ["us-central1-a"] # Replace with your desired zone
 }
 
-resource "google_compute_load_balancer" "default" {
-  name = "zi-load-balancer"
-  type = "loadBalancingScheme::EXTERNAL"
-  port_range = "80-80"
-  health_checks = ["TCP:80"]
+# Create a GKE Kubernetes deployment and service (deploy your Java/Python application)
+resource "kubernetes_deployment" "my_app" {
+  metadata {
+    name = "my-app"
+  }
 
-  backend_configuration {
-    name = "zi-backend-config"
-    backends {
-      group = google_kubernetes_engine_backend_service.default.name
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "my-app"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "my-app"
+        }
+      }
+
+      spec {
+        container {
+          image = "your-docker-image" # Replace with your application's Docker image
+          name  = "my-app-container"
+        }
+      }
     }
   }
 }
 
-resource "google_kubernetes_engine_backend_service" "default" {
-  name = "zi-backend-service"
-  port_name = "http"
-  target_port = 80
-  selector = {
-    app = "zi-app"
+# Create a Kubernetes LoadBalancer service
+resource "kubernetes_service" "my_service" {
+  metadata {
+    name = "my-service"
   }
-}
 
-resource "google_storage_bucket_iam_binding" "default" {
-  bucket = var.gcs_bucket_name
-  role = "roles/storage.objectViewer"
-  members = [
-    "serviceAccount:${google_service_account.default.email}",
-  ]
-}
+  spec {
+    selector = {
+      app = "my-app"
+    }
 
-resource "google_service_account" "default" {
-  name = "zi-service-account"
+    port {
+      port        = 80
+      target_port = 8080 # Replace with your application's port
+    }
+
+    type = "LoadBalancer"
+  }
 }
