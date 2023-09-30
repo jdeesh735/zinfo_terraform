@@ -1,4 +1,4 @@
-name: Deploy Infrastructure and Application
+name: Deploy
 
 on:
   push:
@@ -6,21 +6,25 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install Terraform
-      run: |
-        sudo apt-get update && sudo apt-get install terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.3.1
 
-    - name: Run Terraform to deploy the infrastructure
-      run: terraform init && terraform apply
+      - name: Initialize Terraform
+        run: terraform init
 
-    - name: Build the Python application
-      run: pip install -r requirements.txt && python setup.py build
+      - name: Deploy Infrastructure
+        run: terraform apply -auto-approve
 
-    - name: Deploy the Python application to the GKE cluster
-      run: kubectl apply -f deployment.yaml
+      - name: Build the Python application
+        run: pip install -r requirements.txt && python app.py build
+
+      - name: Deploy the Python application to the GKE cluster
+        run: kubectl apply -f deployment.yaml
