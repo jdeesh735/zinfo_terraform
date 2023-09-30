@@ -31,7 +31,6 @@ resource "google_service_account" "service_account" {
 
 resource "google_service_account_key" "service_account_key" {
   service_account_id = google_service_account.service_account.name
-  output_type       = "JSON"
 }
 
 
