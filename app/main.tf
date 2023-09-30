@@ -34,9 +34,9 @@ resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
   port_range = "80"
 }
 
-resource "google_project_iam_member" "gke_service_account" {
-  project = "zoominfo-project"  # Replace with your actual project ID
-  role    = "roles/storage.admin"  # Replace with the desired IAM role
-  member  = "serviceAccount:zinfo-svc-sa@zoominfo-project.iam.gserviceaccount.com"  # Replace with the service account email
-}
+#resource "google_project_iam_member" "gke_service_account" {
+ # project = "zoominfo-project"  # Replace with your actual project ID
+ # role    = "roles/storage.admin"  # Replace with the desired IAM role
+ # member  = "serviceAccount:zinfo-svc-sa@zoominfo-project.iam.gserviceaccount.com"  # Replace with the service account email
+#}
 
