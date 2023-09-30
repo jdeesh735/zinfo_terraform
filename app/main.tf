@@ -1,3 +1,10 @@
+provider "google" {
+  credentials = file("zinfo.json")
+  project     = "zoominfo-project"
+  region      = "us-central1"  # Replace with your desired region
+}
+
+
 # GKE Cluster
 resource "google_container_cluster" "zi_cluster" {
   name     = "zi-cluster"
