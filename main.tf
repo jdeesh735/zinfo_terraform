@@ -3,26 +3,26 @@ provider "google" {
   region = var.region
 }
 
-resource "google_kubernetes_engine_cluster" "default" {
+resource "google_kubernetes_engine_cluster" "my-cluster" {
   name = "my-cluster"
   location = var.region
   node_count = 3
 }
 
-resource "google_cloud_load_balancing_backend_service" "default" {
+resource "google_cloud_load_balancing_backend_service" "my-backend-service" {
   name = "my-backend-service"
   port_name = "http"
   load_balancing_scheme = "EXTERNAL"
 }
 
-resource "google_cloud_load_balancing_forwarding_rule" "default" {
+resource "google_cloud_load_balancing_forwarding_rule" "my-forwarding-rule" {
   name = "my-forwarding-rule"
   load_balancer_scheme = "EXTERNAL"
   port_range = "80"
   target = google_cloud_load_balancing_backend_service.default.self_link
 }
 
-resource "google_cloud_storage_bucket" "default" {
+resource "google_cloud_storage_bucket" "zinfo-gcs-bucket" {
   name = "zinfo-gcs-bucket"
 }
 
