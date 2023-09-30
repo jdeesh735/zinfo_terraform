@@ -22,25 +22,6 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.GCP_PROJECT }}
 
-      - name: Build and Push Docker Image
-        env:
-          DOCKER_REGISTRY: us-central1-docker.pkg.dev  # Replace with your Docker registry URL
-          DOCKER_IMAGE: ${{ secrets.GCP_PROJECT }}/python-app-image
-        run: |
-          cd app/
-          echo $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA
-          echo $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
-          docker build -t python-app-images:latest .
-          # Tag your Docker image with the desired registry URL and tag
-          docker tag python-app-images:latest us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
-
-          # Authenticate with the container registry (if not already authenticated)
-          docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev < service-account-key.json
-
-          # Push the tagged image to the registry
-          docker push us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
-
-      
       - name: Terraform Init
         run: |
           cd app/  # Replace with the path to your Terraform configuration
