@@ -9,14 +9,7 @@ provider "google" {
 resource "google_container_cluster" "my_cluster" {
   name     = "zi-gke-cluster"  # Your desired GKE cluster name
   location = "us-central1"  # Your desired region
-
-  # Define the default node pool for your GKE cluster
-  node_pool {
-    name       = "default-pool"
-    machine_type = "n1-standard-2"  # Machine type for the nodes
-    node_count = 1  # Number of nodes in the default pool
-    }
-  }
+}
 # Example Kubernetes Deployment
 resource "kubernetes_deployment" "example_deployment" {
   metadata {
