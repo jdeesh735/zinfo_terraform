@@ -1,6 +1,6 @@
 # GKE Cluster
-resource "google_container_cluster" "gke_cluster" {
-  name     = "gke-cluster"
+resource "google_container_cluster" "zi_cluster" {
+  name     = "zi-cluster"
   location = "us-central1-a"
   initial_node_count = 1
   node_config {
