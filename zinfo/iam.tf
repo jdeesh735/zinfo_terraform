@@ -1,19 +1,24 @@
 resource "google_storage_bucket" "my_bucket" {
-  name     = "your-gcs-bucket-name"
+  name     = "zinfo-gcs-bucket"
   location = "US"  # Change to your desired location
 }
 
 resource "google_project_iam_binding" "bucket_iam_binding" {
-  project = "your-project-id"
-  role    = "roles/storage.objectViewer"  # Adjust the role as needed
+  project = "zoominfo-project"
+
+  role    = "roles/storage.admin"  # Replace with the desired IAM role
+  members = [
+    "serviceAccount:zinfo-sa@zoominfo-project.iam.gserviceaccount.com",
+  ]
 }
+
 
 resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
   bucket = google_storage_bucket.my_bucket.name
   role   = "roles/storage.objectViewer"  # Adjust the role as needed
 
   members = [
-    "serviceAccount:<your-service-account-email>",
+    "serviceAccount:zinfo-sa@zoominfo-project.iam.gserviceaccount.com",
   ]
 }
 
