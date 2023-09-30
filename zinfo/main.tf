@@ -14,24 +14,21 @@ resource "google_storage_bucket" "zinfo_bucket" {
 resource "kubernetes_deployment" "python_app" {
   metadata {
     name = "python-app"
-    labels = {
-      app = "python"
-    }
   }
 
   spec {
-    replicas = 2
+    replicas = 3
 
     selector {
       match_labels = {
-        app = "python"
+        app = "python-app"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "python"
+          app = "python-app"
         }
       }
 
@@ -47,6 +44,7 @@ resource "kubernetes_deployment" "python_app" {
     }
   }
 }
+
 
 resource "kubernetes_service" "python_app_service" {
   metadata {
