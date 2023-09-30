@@ -1,4 +1,4 @@
-name: Deploy GKE Service
+name: Deploy to GKE
 
 on:
   push:
@@ -20,8 +20,16 @@ jobs:
           project_id: your-project-id
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
+          kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
+
       - name: Terraform Init & Apply
         run: |
           cd /zinfo/
           terraform init
           terraform apply -auto-approve
+
+
+      
