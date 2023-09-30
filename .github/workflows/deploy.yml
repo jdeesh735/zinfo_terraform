@@ -32,7 +32,7 @@ jobs:
           echo $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
           docker build -t python-app-images:latest .
           # Tag your Docker image with the desired registry URL and tag
-          docker tag my-python-app:latest us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
+          docker tag python-app-images:latest us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
 
           # Authenticate with the container registry (if not already authenticated)
           docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev < service-account-key.json
