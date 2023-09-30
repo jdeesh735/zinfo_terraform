@@ -1,44 +1,29 @@
-from flask import Flask, request, jsonify
+import io
+import os
 from google.cloud import storage
 
-app = Flask(__name__)
+def get_file(bucket_name, file_name):
+  """Fetches a file from a GCS bucket."""
 
-# Replace with your GCS bucket name and file name
-bucket_name = 'zinfo-gcs-bucket'
-file_name = 'sample.txt'
+  client = storage.Client()
+  bucket = client.get_bucket(bucket_name)
+  blob = bucket.blob(file_name)
 
-def fetch_file_contents(bucket_name, file_name):
-    """Fetches the contents of a file from a GCS bucket."""
-    try:
-        storage_client = storage.Client()
-        bucket = storage_client.bucket(bucket_name)
-        blob = bucket.blob(file_name)
+  with io.BytesIO() as f:
+    blob.download_to_file(f)
+    return f.getvalue()
 
-        # Check if the file exists
-        if not blob.exists():
-            return None
 
-        # Fetch the contents of the file
-        file_contents = blob.download_as_text()
+def serve_file(file_content):
+  """Serves a file to clients."""
 
-        return file_contents
-    except Exception as e:
-        return str(e)
+  print("Serving file...")
+  print(file_content.decode())
 
-@app.route('/')
-def serve_file():
-    try:
-        file_contents = fetch_file_contents(bucket_name, file_name)
 
-        if file_contents is not None:
-            # Display the name of the file
-            return f"The file name is: {file_name}"
+if __name__ == "__main__":
+  bucket_name = os.environ.get("GCS_BUCKET_NAME")
+  file_name = os.environ.get("FILE_NAME")
 
-        # File not found
-        return "File not found in the GCS bucket.", 404
-    except Exception as e:
-        return str(e), 500
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
-
+  file_content = get_file(bucket_name, file_name)
+  serve_file(file_content)
