@@ -28,13 +28,6 @@ resource "google_compute_url_map" "url_map" {
       allow_headers  = ["*"]
       expose_headers = ["*"]
     }
-    timeout = "5s"
-  }
-
-  default_route_action {
-    weighted_action {
-      default_service = google_compute_backend_service.backend_service.id
-    }
   }
 }
 
