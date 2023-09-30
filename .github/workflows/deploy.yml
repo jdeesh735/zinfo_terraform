@@ -23,7 +23,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT }}
 
       - name: Authenticate with GKE cluster
-        run: gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project       
+        run: gcloud container clusters get-credentials zi-cluster --zone us-central1-a --project zoominfo-project      
 
       - name: Apply Kubernetes Deployment
         run: |
