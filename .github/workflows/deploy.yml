@@ -27,7 +27,8 @@ jobs:
 
       - name: Apply Kubernetes Deployment
         run: |
-          cd app/ 
+          cd app/
+          gcloud container clusters get-credentials zi-cluster --zone us-central1-a --project zoominfo-project
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
 
