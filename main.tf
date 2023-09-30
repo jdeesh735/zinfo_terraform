@@ -23,7 +23,7 @@ resource "google_cloud_load_balancing_forwarding_rule" "default" {
 }
 
 resource "google_cloud_storage_bucket" "default" {
-  name = "my-bucket"
+  name = "zinfo-gcs-bucket"
 }
 
 resource "google_cloud_storage_bucket_iam_binding" "default" {
