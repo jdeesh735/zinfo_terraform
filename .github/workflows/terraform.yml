@@ -1,30 +1,49 @@
-name: Deploy
+name: Terraform Deployment
 
 on:
   push:
     branches:
-      - main
+      - main # Change this to your main branch name
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.3.1
+          terraform_version: 1.0.4 # Replace with your desired Terraform version
 
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Deploy Infrastructure
+      - name: Apply Terraform changes
         run: terraform apply -auto-approve
 
-      - name: Build the Python application
-        run: pip install -r requirements.txt && python app.py build
+      - name: Deploy to GKE
+        run: |
+          # Use 'kubectl' commands to deploy your Kubernetes application
+          kubectl apply -f path/to/your/kubernetes/manifests
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
-      - name: Deploy the Python application to the GKE cluster
-        run: kubectl apply -f deployment.yaml
+      - name: Test Deployment
+        run: |
+          # Add test commands here to verify your application deployment
+          # For example, use 'curl' to test the endpoint
+          curl http://<load-balancer-ip>/get-file
+        env:
+          LOAD_BALANCER_IP: ${{ secrets.LOAD_BALANCER_IP }}
+
+      - name: Cleanup
+        run: terraform destroy -auto-approve
+        # Use a specific service account with permissions to destroy resources
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+
+    env:
+      TF_VAR_project: ${{ secrets.GCP_PROJECT }}
