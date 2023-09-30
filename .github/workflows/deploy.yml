@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform Init & Apply
         run: |
-          cd /zinfo/
+          cd zinfo/
           terraform init
           terraform apply -auto-approve
 
