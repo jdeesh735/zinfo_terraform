@@ -17,10 +17,6 @@ resource "google_container_cluster" "my_cluster" {
     node_count = 2  # Number of nodes in the default pool
     }
   }
-
-  # You can add more node pool blocks if needed for additional node pools
-}
-
 # Example Kubernetes Deployment
 resource "kubernetes_deployment" "example_deployment" {
   metadata {
