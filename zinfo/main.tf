@@ -66,35 +66,3 @@ resource "kubernetes_service" "python_app_service" {
     type = "LoadBalancer"
   }
 }
-
-
-resource "kubernetes_cluster_role" "python_role" {
-  metadata {
-    name = "python-role"
-  }
-
-  rule {
-    api_groups = [""]
-    resources  = ["pods"]
-    verbs      = ["get", "list", "watch"]
-  }
-}
-
-resource "kubernetes_cluster_role_binding" "python_role_binding" {
-  metadata {
-    name = "python-role-binding"
-  }
-
-  role_ref {
-    kind     = "ClusterRole"
-    name     = kubernetes_cluster_role.python_role.name
-    api_group = "rbac.authorization.k8s.io"
-  }
-
-  subject {
-    kind = "ServiceAccount"
-    name = "default"
-  }
-}
-
-
