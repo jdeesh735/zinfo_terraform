@@ -18,7 +18,7 @@ resource "kubernetes_deployment" "python-app" {
       }
       spec {
         container {
-          image = "your-docker-image"
+          image = "us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-image:latest"
           name  = "python-app"
         }
       }
