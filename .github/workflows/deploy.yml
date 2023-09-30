@@ -1,40 +1,36 @@
-name: Deploy to GKE
+# name: Deploy to GKE
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Google Cloud CLI
-        uses: google-github-actions/setup-gcloud@v0.3.0
-        with:
-          version: latest
-          project_id: zoominfo-project
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-          cleanup_credentials: true
-        env:
-          ACTIONS_STEP_DEBUG: true  # Enable debug output for this step
+#       - name: Set up Google Cloud CLI
+#         uses: google-github-actions/setup-gcloud@v0.3.0
+#         with:
+#           version: latest
+#           project_id: zoominfo-project
+#           service_account_key: ${{ secrets.GCP_SA_KEY }}
+#           export_default_credentials: true
+#           cleanup_credentials: true
+#         env:
+#           ACTIONS_STEP_DEBUG: true  # Enable debug output for this step
 
-      - name: Terraform Init & Apply
-        run: |
-          cd zinfo/
-          terraform init
-          terraform apply -auto-approve
+#       - name: Terraform Init & Apply
+#         run: |
+#           cd zinfo/
+#           terraform init
+#           terraform apply -auto-approve
 
-      - name: Configure kubectl
-        run: |
-          gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
-          kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
-
-      
-
-      
+#       - name: Configure kubectl
+#         run: |
+#           gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
+#           kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
