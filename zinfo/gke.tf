@@ -13,7 +13,7 @@ resource "google_container_cluster" "my_cluster" {
   # Define the default node pool for your GKE cluster
   node_pool {
     name       = "default-pool"
-    machine_type = "n1-standard-2"  # Machine type for the nodes
+    #machine_type = "n1-standard-2"  # Machine type for the nodes
     node_count = 2  # Number of nodes in the default pool
     min_count  = 1  # Minimum number of nodes (optional)
     max_count  = 2  # Maximum number of nodes (optional)
