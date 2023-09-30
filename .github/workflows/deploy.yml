@@ -30,9 +30,9 @@ jobs:
           cd app/
           echo $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA
           echo $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
-          docker build -t python-app-image:latest .
-          docker tag python-app-image:latest gcr.io/zoominfo-project/python-app-image:latest
-          docker push us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-image:latest
+          docker build -t python-app-images:latest .
+          docker tag python-app-images:latest gcr.io/zoominfo-project/python-app-images:latest
+          docker push us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
       
       - name: Terraform Init
         run: |
