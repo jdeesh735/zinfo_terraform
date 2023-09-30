@@ -1,36 +1,57 @@
-# name: Deploy to GKE
+name: Python App Deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-# on:
-#   push:
-#     branches:
-#       - main
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+      - name: Build and Push Docker Image
+        env:
+          DOCKER_REGISTRY: us-central1-docker.pkg.dev  # Replace with your Docker registry URL
+          DOCKER_IMAGE: ${{ secrets.GCP_PROJECT }}/python-app-image
+        run: |
+          echo $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA
+          echo $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+          docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA .
+          docker tag $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | docker login -u _json_key --password-stdin $DOCKER_REGISTRY
+          docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$GITHUB_SHA
+          docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+      
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT }}
 
-#       - name: Set up Google Cloud CLI
-#         uses: google-github-actions/setup-gcloud@v0.3.0
-#         with:
-#           version: latest
-#           project_id: zoominfo-project
-#           service_account_key: ${{ secrets.GCP_SA_KEY }}
-#           export_default_credentials: true
-#           cleanup_credentials: true
-#         env:
-#           ACTIONS_STEP_DEBUG: true  # Enable debug output for this step
+      - name: Terraform Init
+        run: |
+          cd app/  # Replace with the path to your Terraform configuration
+          terraform init
 
-#       - name: Terraform Init & Apply
-#         run: |
-#           cd zinfo/
-#           terraform init
-#           terraform apply -auto-approve
+      - name: Terraform Apply
+        run: |
+          cd app/  # Replace with the path to your Terraform configuration
+          terraform apply -auto-approve
 
-#       - name: Configure kubectl
-#         run: |
-#           gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project
-#           kubectl config use-context gke_zoominfo-project_us-central1_zi-cluster
+      - name: Authenticate with GKE cluster
+        run: gcloud container clusters get-credentials zi-cluster --region us-central1 --project zoominfo-project       
+
+      - name: Apply Kubernetes Deployment
+        run: |
+          cd app/ 
+          kubectl apply -f deployment.yaml
+
+
+
