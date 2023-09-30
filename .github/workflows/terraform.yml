@@ -1,4 +1,4 @@
-name: Terraform
+name: Deploy Infrastructure and Application
 
 on:
   push:
@@ -6,39 +6,23 @@ on:
       - main
 
 jobs:
-  terraform:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0.3
-      with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: zoominfo-project
-
-    - name: Initialize Terraform
-      run: terraform init
-
-    - name: Apply Terraform
-      run: terraform apply -auto-approve
-
-    - name: Build and Push Docker Image
+    - name: Install Terraform
       run: |
-        docker build -t gcr.io/zoominfo-project/zi-image-name:latest .
-        docker push gcr.io/zoominfo-project/zi-image-name:latest
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install terraform
 
-    - name: Deploy to GKE
-      run: |
-        kubectl apply -f kubernetes/deployment.yaml
-        kubectl apply -f kubernetes/service.yaml
+    - name: Run Terraform to deploy the infrastructure
+      run: terraform init && terraform apply
 
-    - name: Deploy Successful
-      run: echo "Deployment Successful!"
+    - name: Build the Python application
+      run: pip install -r requirements.txt && python setup.py build
 
-    - name: Clean Up
-      run: terraform destroy -auto-approve
-
-
+    - name: Deploy the Python application to the GKE cluster
+      run: kubectl apply -f deployment.yaml
