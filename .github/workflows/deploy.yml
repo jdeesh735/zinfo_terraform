@@ -13,8 +13,8 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Set up Google Cloud SDK
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@v3
+    - name: Set up gcloud Cloud SDK environment
+      uses: google-github-actions/setup-gcloud@v1.1.1
       with:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         project_id: zoominfo-project
