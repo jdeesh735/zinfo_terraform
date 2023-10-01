@@ -17,7 +17,7 @@ resource "google_container_cluster" "zi_cluster" {
   location = "us-central1-a"
   initial_node_count = 1
   node_config {
-    machine_type = "n1-standard-2"
+    machine_type = "e2-standard-2"
   }
 }
 
