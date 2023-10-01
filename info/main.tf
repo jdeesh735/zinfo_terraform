@@ -1,6 +1,6 @@
 provider "google" {
   credentials = file("../app/zinfo.json")
-  project     = "your-project-id"
+  project     = "zoominfo-project"
 }
 
 resource "google_storage_bucket" "my_bucket" {
