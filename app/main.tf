@@ -39,6 +39,13 @@ resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
   target     = google_compute_target_pool.lb_target_pool.id
   port_range = "80"
 }
+resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
+  bucket = "zinfo-bucket"  # Replace with your GCS bucket name without the "b/" prefix.
+  role   = "roles/storage.objectViewer"
+  members = [
+    "serviceAccount:${google_container_cluster.my_cluster.node_config.0.service_account}",
+  ]
+}
 
 #resource "google_project_iam_member" "gke_service_account" {
  # project = "zoominfo-project"  # Replace with your actual project ID
