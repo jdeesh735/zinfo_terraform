@@ -12,5 +12,9 @@ RUN pip install -r requirements.txt
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
+# Define environment variable
+ENV BUCKET_NAME zinfo-bucket
+ENV FILE_NAME "sample.txt"
+
 # Run app.py when the container launches
 CMD ["python", "app.py"]
