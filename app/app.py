@@ -1,38 +1,27 @@
+import io
 import os
-from werkzeug.urls import url_quote
+
 from flask import Flask, send_file
-from google.cloud import storage
 
 app = Flask(__name__)
 
-# Set your GCS bucket name and file name
-GCS_BUCKET_NAME = "zinfo-bucket"
-FILE_NAME = "sample.txt"
+@app.route("/")
+def serve_file():
+  """Serves the file from the GCS bucket."""
 
-@app.route('/')
-def home():
-    return "Hello, GKE service!"
+  bucket_name = os.getenv("BUCKET_NAME")
+  file_name = os.getenv("FILE_NAME")
 
-@app.route('/fetch/<file_name>')
-def fetch_file(file_name):
-    try:
-        # Initialize GCS client
-        client = storage.Client()
+  storage = StorageClient()
+  bucket = storage.bucket(bucket_name)
+  blob = bucket.blob(file_name)
 
-        # Fetch the file from GCS
-        bucket = client.get_bucket(GCS_BUCKET_NAME)
-        blob = bucket.blob(file_name)
+  # Download the file from the GCS bucket.
+  blob.download_to_filename("/tmp/file")
 
-        # Serve the file to clients
-        return send_file(
-            blob.download_as_text(),
-            mimetype='text/plain',
-            as_attachment=True,
-            attachment_filename=file_name
-        )
+  # Open the file and send it to the client.
+  with open("/tmp/file", "rb") as f:
+    return send_file(f, as_attachment=False)
 
-    except Exception as e:
-        return f"Error: {str(e)}", 500
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+if __name__ == "__main__":
+  app.run(host="0.0.0.0", port=80)
