@@ -4,6 +4,12 @@ provider "google" {
   region      = "us-central1"  # Replace with your desired region
 }
 
+resource "google_storage_bucket" "my_bucket" {
+  name     = "zinfo-bucket"
+  location = "us-central1"  # Choose your preferred location
+
+  uniform_bucket_level_access = true
+}
 
 # GKE Cluster
 resource "google_container_cluster" "zi_cluster" {
@@ -40,12 +46,10 @@ resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
  # member  = "serviceAccount:zinfo-svc-sa@zoominfo-project.iam.gserviceaccount.com"  # Replace with the service account email
 #}
 
-resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
-  bucket = "zinfo-bucket"  # Replace with your GCS bucket name.
-  role   = "roles/storage.objectViewer"
-  members = [
-    "serviceAccount:${google_container_cluster.zi_cluster.node_config.0.service_account}",
-  ]
-}
-
-
+#resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
+ # bucket = "zinfo-gcs-bucket"  # Replace with your GCS bucket name.
+  #role   = "roles/storage.objectViewer"
+  #members = [
+  #  "serviceAccount:${google_container_cluster.zi_cluster.node_config.0.service_account}",
+ # ]
+#}
