@@ -4,6 +4,12 @@ provider "google" {
   region      = "us-central1"  # Replace with your desired region
 }
 
+resource "google_storage_bucket" "my_bucket" {
+  name     = "zinfo-bucket"
+  location = "us-central1"  # Choose your preferred location
+
+  uniform_bucket_level_access = true
+}
 
 # GKE Cluster
 resource "google_container_cluster" "zi_cluster" {
