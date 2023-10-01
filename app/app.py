@@ -1,27 +1,31 @@
-import io
-import os
-
-from flask import Flask, send_file
+from flask import Flask, request, jsonify
+from google.cloud import storage
 
 app = Flask(__name__)
 
-@app.route("/")
-def serve_file():
-  """Serves the file from the GCS bucket."""
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-  bucket_name = os.getenv("BUCKET_NAME")
-  file_name = os.getenv("FILE_NAME")
+@app.route('/fetch-gcs-object/<bucket>/<object_name>')
+def fetch_gcs_object(bucket, object_name):
+    try:
+        # Create a storage client
+        client = storage.Client()
 
-  storage = StorageClient()
-  bucket = storage.bucket(bucket_name)
-  blob = bucket.blob(file_name)
+        # Get a bucket reference
+        bucket = client.bucket(bucket)
 
-  # Download the file from the GCS bucket.
-  blob.download_to_filename("/tmp/file")
+        # Get a blob (object) from the bucket
+        blob = bucket.blob(object_name)
 
-  # Open the file and send it to the client.
-  with open("/tmp/file", "rb") as f:
-    return send_file(f, as_attachment=False)
+        # Download the content of the blob
+        content = blob.download_as_text()
 
-if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=80)
+        return jsonify({'data': content})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
