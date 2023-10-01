@@ -32,7 +32,7 @@ jobs:
     - name: Authenticate to GKE Cluster
       run: |
         cd app
-        gcloud auth activate-service-account --key-file=app/zinfo.json
+        gcloud auth activate-service-account --key-file=zinfo.json
         gcloud container clusters get-credentials zi-cluster --zone us-central1-a --project zoominfo-project
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
