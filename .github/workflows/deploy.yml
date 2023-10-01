@@ -19,13 +19,19 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         project_id: zoominfo-project
         export_default_credentials: true
+
+    - name: Update Google Cloud SDK
+      run: gcloud components update
         
     - name: Build and Push Docker Image
       run: |
         cd app
-        docker build -t us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:${{ github.sha }} -t us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest .
-        docker push us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:${{ github.sha }}
-        docker push us-central1-docker.pkg.dev/zoominfo-project/ws/python-app-images:latest
+        docker build -t gcr.io/zoominfo-project/python-app:${{ github.sha }} -t gcr.io/zoominfo-project/python-app:latest .
+        docker push gcr.io/zoominfo-project/python-app:${{ github.sha }}
+        docker push gcr.io/zoominfo-project/python-app:latest
+        
+    - name: Authenticate to GCR
+      run: gcloud auth configure-docker gcr.io
 
     - name: Terraform Init
       run: |
