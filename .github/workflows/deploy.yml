@@ -1,10 +1,8 @@
 name: Build and Deploy Python Image
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,13 +17,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-        cd app
-        pip install -r requirements.txt
+         cd app
+         pip install -r requirements.txt
 
       - name: Build Python image with latest tag
         run: |
-        cd app
-        docker build -t gcr.io/zoominfo-project/python-app:latest .
+         cd app
+         docker build -t gcr.io/zoominfo-project/python-app:latest .
 
       - name: Push Python image to Artifact Registry
         uses: google-github-actions/artifact-registry@v1.0.1
@@ -43,27 +41,27 @@ jobs:
 
       - name: Authenticate to GKE cluster
         run: |
-        cd app 
-        gcloud auth activate-service-account --key-file ${{ secrets.GCP_SA_KEY }}
-        gcloud container clusters get-credentials zi-cluster --zone us-central1-a --project zoominfo-project
+         cd app 
+         gcloud auth activate-service-account --key-file ${{ secrets.GCP_SA_KEY }}
+         gcloud container clusters get-credentials zi-cluster --zone us-central1-a --project zoominfo-project
 
 
       - name: Run Terraform init
         run: |
-        cd app 
-        terraform init
+         cd app 
+         terraform init
 
       - name: Run Terraform apply
         run: |
-        cd app 
-        terraform apply
+         cd app 
+         terraform apply -auto-approve
 
       - name: Deploy Python image to Kubernetes cluster
         run: |
-        cd app 
-        kubectl apply -f deployment.yaml
+         cd app 
+         kubectl apply -f deployment.yaml
         
       - name: Apply service yaml
         run: |
-        cd app 
-        kubectl apply -f service.yaml
+         cd app 
+         kubectl apply -f service.yaml
