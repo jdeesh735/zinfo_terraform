@@ -40,3 +40,12 @@ resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
  # member  = "serviceAccount:zinfo-svc-sa@zoominfo-project.iam.gserviceaccount.com"  # Replace with the service account email
 #}
 
+resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
+  bucket = "zoominfo-project"  # Replace with your GCS bucket name.
+  role   = "roles/storage.objectViewer"
+  members = [
+    "serviceAccount:${google_container_cluster.zi_cluster.node_config.0.service_account}",
+  ]
+}
+
+
