@@ -41,7 +41,7 @@ resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
 #}
 
 resource "google_storage_bucket_iam_binding" "bucket_iam_binding" {
-  bucket = "zinfo-gcs-bucket"  # Replace with your GCS bucket name.
+  bucket = "zinfo-bucket"  # Replace with your GCS bucket name.
   role   = "roles/storage.objectViewer"
   members = [
     "serviceAccount:${google_container_cluster.zi_cluster.node_config.0.service_account}",
