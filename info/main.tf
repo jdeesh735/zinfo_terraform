@@ -9,3 +9,13 @@ resource "google_storage_bucket" "my_bucket" {
 
   uniform_bucket_level_access = true
 }
+
+resource "null_resource" "python_script" {
+  provisioner "local-exec" {
+    command = "python app.py"
+  }
+
+  # Trigger this when GKE cluster creation is complete.
+  depends_on = [google_container_cluster.my_cluster]
+}
+
