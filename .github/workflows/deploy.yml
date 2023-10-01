@@ -20,7 +20,7 @@ jobs:
       run: |
         cd app
         terraform init
-        terraform apply -auto-approve
+        terraform destroy -auto-approve
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         TF_VAR_gke_cluster_name: zi-cluster
