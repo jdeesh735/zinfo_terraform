@@ -5,7 +5,7 @@ from google.cloud import storage
 app = Flask(__name__)
 
 # Set your GCS bucket name and file name
-GCS_BUCKET_NAME = "zinfo-gcs-bucket"
+GCS_BUCKET_NAME = "zinfo-bucket"
 FILE_NAME = "sample.txt"
 
 @app.route('/')
