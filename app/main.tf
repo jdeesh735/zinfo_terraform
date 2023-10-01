@@ -17,11 +17,11 @@ resource "google_container_cluster" "zi_cluster" {
 
 # Load Balancer
 resource "google_compute_target_pool" "lb_target_pool" {
-  name = "lb-target-pool"
+  name = "zi-lb-target-pool"
 }
 
 resource "google_compute_http_health_check" "lb_health_check" {
-  name               = "lb-health-check"
+  name               = "zi-lb-health-check"
   port               = 80
   request_path       = "/"
   check_interval_sec = 10
@@ -29,7 +29,7 @@ resource "google_compute_http_health_check" "lb_health_check" {
 }
 
 resource "google_compute_forwarding_rule" "lb_forwarding_rule" {
-  name       = "lb-forwarding-rule"
+  name       = "zi-lb-forwarding-rule"
   target     = google_compute_target_pool.lb_target_pool.id
   port_range = "80"
 }
